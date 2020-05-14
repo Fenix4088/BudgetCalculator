@@ -20,9 +20,9 @@ let controller = (function(budgetController, uiCtrl) {
         budgetController.test();
         // 3. Доюавлять запись из формы в UI
         uiCtrl.renderListItem(newItem, input.type);
-        
+        uiCtrl.clearFields();
         // Тестовая генерация значений в форме
-        generateTestData.init();
+        // generateTestData.init();
         // 4. Посчитать в бюджет
         // 5. Отобразить бюджет в UI
     }

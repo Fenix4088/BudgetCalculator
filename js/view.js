@@ -69,9 +69,22 @@ let viewController = (function() {
         document.querySelector(containerElement).insertAdjacentHTML("beforeend", newHtml);
 
     }
+
+    // Ф-я которая будет очищать поля формы 
+    function clearFields () {
+        let inputDesc, inputVal;
+        inputDesc = document.querySelector(DOMstrings.inputDescription);
+        inputVal = document.querySelector(DOMstrings.inputValue);
+
+        inputDesc.value = "";
+        // Встроенный метод который вызывает фокус на выюранном поле
+        inputDesc.focus();
+        inputVal.value = "";
+
+    }
     // Ф-я для возврата из view.js 
     return {
-
+        clearFields: clearFields,
         getInput: getInput,
         renderListItem: renderListItem,
         // Метод который возвращает селекторы
