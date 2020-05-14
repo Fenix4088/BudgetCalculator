@@ -38,12 +38,24 @@ let controller = (function(budgetController, uiCtrl) {
         // 1. Расчитать бюджет в модели
         budgetController.calculateBudget();
         // 2. Получить расчитанный бюджет из модели
+        let budgetObj = budgetController.getBudget();
+        console.log("updateBudget -> budgetObj", budgetObj);
+        // 3. Отобразить весь бюджет в шаблоне
+        uiCtrl.updateBudget(budgetObj);
+
     }
     
     return {
         init: function() {
             console.log("App started");
             setupEventListeners();
+            uiCtrl.updateBudget({
+                budget: 0,
+                totalInc: 0,
+                totalExp: 0,
+                percentage: 0
+            });
+
         }
     }
 

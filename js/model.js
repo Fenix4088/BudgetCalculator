@@ -70,6 +70,16 @@ let modelController = (function() {
                 
     }
 
+    // Ф-я котора будет возвращать бюджет из модели
+    function getBudget() {
+        return {
+            budget: data.budget,
+            totalInc: data.totals.inc,
+            totalExp: data.totals.exp,
+            percentage: data.percentage
+        }
+    }
+
     // Структура данных о расходах и доходах каждого действия и общие доходы и рассходы
     // Тут будут хранится все данные касаемые расходов и доходов нашего
     let data = {
@@ -89,6 +99,7 @@ let modelController = (function() {
     return {
         addItem: addItem,
         calculateBudget: calculateBudget,
+        getBudget: getBudget,
         test: function() {
             console.log(data);
         }

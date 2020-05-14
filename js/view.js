@@ -8,6 +8,11 @@ let viewController = (function() {
         form: '#budget-form',
         incomeContainer: "#income__list",
         expenseContainer: "#expenses__list",
+        budgetLabel: "#budget-value",
+        incomeLabel: "#income-label",
+        expanceLabel: "#expence-label",
+        expancePercentLabel: "#expense-persent-label",
+
     }
 
     // Метод который собирает данные из формы
@@ -82,11 +87,29 @@ let viewController = (function() {
         inputVal.value = "";
 
     }
+
+    // Ф-я для отображения подсчитанных рассходов доходов и процентов в приложении
+    function updateBudget(obj) {
+
+        document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
+        document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
+        document.querySelector(DOMstrings.expanceLabel).textContent = obj.totalExp;
+
+        if(obj.percentage > 0) {
+            document.querySelector(DOMstrings.expancePercentLabel).textContent = obj.percentage;
+        } else {
+            document.querySelector(DOMstrings.expancePercentLabel).textContent = "--"
+        }
+
+
+
+    }
     // Ф-я для возврата из view.js 
     return {
         clearFields: clearFields,
         getInput: getInput,
         renderListItem: renderListItem,
+        updateBudget: updateBudget,
         // Метод который возвращает селекторы
         getDomStrings: function() {
             return DOMstrings
