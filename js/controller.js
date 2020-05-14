@@ -13,7 +13,6 @@ let controller = (function(budgetController, uiCtrl) {
 
         // 1. Получать данные из формы
         let input = uiCtrl.getInput();
-        console.log(input);
 
         // Проверка на пустые поля перед началом работы
         // Проверяе введенено ли в поле с суммой число
@@ -28,11 +27,17 @@ let controller = (function(budgetController, uiCtrl) {
             uiCtrl.clearFields();
             // Тестовая генерация значений в форме
             generateTestData.init();
-            // 4. Посчитать в бюджет
-            // 5. Отобразить бюджет в UI
+            // 4. Посчитать в бюджет. Вызываем ф-ю для обновления общей суммы бюджета
+            updateBudget();
         } 
-
        
+    }
+    
+    // Ф-я для подсчета бюджета
+    function updateBudget () {
+        // 1. Расчитать бюджет в модели
+        budgetController.calculateBudget();
+        // 2. Получить расчитанный бюджет из модели
     }
     
     return {

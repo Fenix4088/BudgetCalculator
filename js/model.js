@@ -30,15 +30,44 @@ let modelController = (function() {
         
         // Проверяем какой тип к нам пришел (доход или расход)
         if (type === "inc") {
-            newItem = new Income(ID, desc, val);
+                                            // parseFloat() преобразует строку в число с плавающей точкой
+            newItem = new Income(ID, desc, parseFloat(val));
         } else if (type === "exp") {
-            newItem = new Expense(ID, desc, val);
+            newItem = new Expense(ID, desc, parseFloat(val));
         }
         // Записываем "запись"/обьект в нашу структуру данных
         data.allItems[type].push(newItem);
         // Возвращаем новый обьект
         // Мы возвращаем newItem для того что бы на его основе обновить разметку
         return newItem;
+    }
+    // Ф-я которая будет возвращать сумму всех доходов и рассходов 
+    // В зависимости от того к чему мы будем ее применять
+    function calculateTotalSum(type) {
+        let sum = 0;
+        data.allItems[type].forEach( function(item) {
+            sum = sum + item.value;
+        });
+        return sum;
+    }
+
+    // Ф-я которая будет подсчитывать общий бюджет
+    function  calculateBudget() {
+        data.totals.inc = calculateTotalSum('inc');
+        data.totals.exp = calculateTotalSum('exp');
+
+        // Расчет общего бюджета
+        data.budget = data.totals.inc - data.totals.exp;
+
+        // Считаем процент для расходов
+        // Предусматриваем когда доходы равны нулю но рассходы есть
+        // Если доход будет равен 0 а рассходы нет то у нас будет деление на ноль и это вызовет ошибку
+        if(data.totals.inc > 0) {
+            data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+        } else {
+            data.percentage = -1;
+        }
+                
     }
 
     // Структура данных о расходах и доходах каждого действия и общие доходы и рассходы
@@ -51,12 +80,15 @@ let modelController = (function() {
         totals: {
             inc: 0,
             exp: 0
-        }
+        },
+        budget: 0,
+        percentage: -1
     }
 
     // Возвращаем ф-ю addItem в виде обьекта для того что бы обратится к нему в контроллере
     return {
         addItem: addItem,
+        calculateBudget: calculateBudget,
         test: function() {
             console.log(data);
         }
