@@ -44,15 +44,21 @@ let controller = (function(budgetController, uiCtrl) {
         if(event.target.closest(".item__remove")) {
             // Находим родителя кнопки с тегом li
             // И сразу же обращаемся к его id
-            itemID = event.target.closest("li.budget-list__item").id;
+            itemID = event.target.closest("li.budget-list__item").id; // inc-0
             // Метод split() разделяет строку на масси о заданому разделителю
             // ID эдемента inc-1/exp-1 разбиваеться на массив ["inc", "1"]
-            splitID = itemID.split("-");
+            splitID = itemID.split("-"); //"inc-0" => ["inc", "0"]
             type = splitID[0];
             ID = parseInt(splitID[1]);
 
             // Вызываем Ф-ю удаления данных о доходах и расходах из модели
             budgetController.deleteItem(type, ID);
+            // Вызываем Ф-ю удаления данных о доходах и расходах из view
+            uiCtrl.deleteListItem(itemID);
+
+            // Обновляем бюджет после удаления
+            updateBudget();
+
         }
     }
     

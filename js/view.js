@@ -27,8 +27,6 @@ let viewController = (function() {
 
     // Метод с помощью которого мы будем вставлять "запись" в разметку
     // Принемает в себя обьект записи и тип(куда она относится в рассход или доход)
-
-
     function renderListItem(obj, type) {
         let containerElement, html;
         if(type === "inc") {
@@ -105,12 +103,19 @@ let viewController = (function() {
 
 
     }
+
+    // Ф-я для удаления данных с экрана 
+    function deleteListItem(itemID) {
+        document.getElementById(itemID).remove();
+    }
+    
     // Ф-я для возврата из view.js 
     return {
         clearFields: clearFields,
         getInput: getInput,
         renderListItem: renderListItem,
         displayBudget: displayBudget,
+        deleteListItem: deleteListItem,
         // Метод который возвращает селекторы
         getDomStrings: function() {
             return DOMstrings
