@@ -3,6 +3,7 @@ let controller = (function(budgetController, uiCtrl) {
 
     
     let setupEventListeners = function () {
+        // Получем значение getDomStrings в контроллере
         let DOM = uiCtrl.getDomStrings();
         document.querySelector(DOM.form).addEventListener('submit', ctrlAddItem);
     }
@@ -15,9 +16,13 @@ let controller = (function(budgetController, uiCtrl) {
         console.log(input);
 
         // 2. Добавлять данные из формы в модель
-        budgetController.addItem(input.type, input.description, input.value);
+        let newItem = budgetController.addItem(input.type, input.description, input.value);
         budgetController.test();
         // 3. Доюавлять запись из формы в UI
+        uiCtrl.renderListItem(newItem, input.type);
+        
+        // Тестовая генерация значений в форме
+        generateTestData.init();
         // 4. Посчитать в бюджет
         // 5. Отобразить бюджет в UI
     }
