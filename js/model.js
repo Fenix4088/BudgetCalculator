@@ -44,7 +44,20 @@ let modelController = (function() {
 
     // Ф-я удаления данных о доходах и расходах из модели
     function deleteItem (type, id) {
+        // Создаем новый массив в который мы запишем айдишки всех элементов
+        let ids = data.allItems[type].map( function(item) {
+            return item.id;
+        });
         
+        // Узнаем какой индекс в массиве имеет данный id дохода/расхода
+       index =  ids.indexOf(id);
+        //Производим удаление(splice(откуда начинаем удаление,с какого индекса, сколько элементов удалить))
+        // Условие, если элемент массива не найден, то мы его удаляем
+        if(index !== -1) {
+            data.allItems[type].splice(index, 1);    
+        }
+        console.log("deleteItem -> data.allItems", data.allItems)
+
     }
 
     // Ф-я которая будет возвращать сумму всех доходов и рассходов 
@@ -106,6 +119,7 @@ let modelController = (function() {
     // Возвращаем ф-ю addItem в виде обьекта для того что бы обратится к нему в контроллере
     return {
         addItem: addItem,
+        deleteItem: deleteItem,
         calculateBudget: calculateBudget,
         getBudget: getBudget,
         test: function() {

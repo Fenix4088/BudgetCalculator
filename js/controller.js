@@ -49,7 +49,7 @@ let controller = (function(budgetController, uiCtrl) {
             // ID эдемента inc-1/exp-1 разбиваеться на массив ["inc", "1"]
             splitID = itemID.split("-");
             type = splitID[0];
-            ID = splitID[1];
+            ID = parseInt(splitID[1]);
 
             // Вызываем Ф-ю удаления данных о доходах и расходах из модели
             budgetController.deleteItem(type, ID);
@@ -62,7 +62,6 @@ let controller = (function(budgetController, uiCtrl) {
         budgetController.calculateBudget();
         // 2. Получить расчитанный бюджет из модели
         let budgetObj = budgetController.getBudget();
-        console.log("updateBudget -> budgetObj", budgetObj);
         // 3. Отобразить весь бюджет в шаблоне
         uiCtrl.displayBudget(budgetObj);
 
