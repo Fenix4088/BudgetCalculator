@@ -41,5 +41,5 @@ let generateTestData = (function () {
 })();
 
 
-// generateTestData.init();
+generateTestData.init();
     
