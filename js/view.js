@@ -12,6 +12,7 @@ let viewController = (function() {
         incomeLabel: "#income-label",
         expanceLabel: "#expence-label",
         expancePercentLabel: "#expense-persent-label",
+        budgetTable: "#budget-table",
 
     }
 
@@ -32,7 +33,7 @@ let viewController = (function() {
         let containerElement, html;
         if(type === "inc") {
             containerElement = DOMstrings.incomeContainer;
-            html = `<li id="income-%id%" class="budget-list__item item item--income">
+            html = `<li id="inc-%id%" class="budget-list__item item item--income">
             <div class="item__title">%description%</div>
             <div class="item__right">
                 <div class="item__amount">%value%</div>
@@ -46,7 +47,7 @@ let viewController = (function() {
         </li>`;
         } else {
             containerElement = DOMstrings.expenseContainer;
-            html = `<li id="expense-%id%" class="budget-list__item item item--expense">
+            html = `<li id="exp-%id%" class="budget-list__item item item--expense">
             <div class="item__title">%description%</div>
             <div class="item__right">
                 <div class="item__amount">
@@ -89,7 +90,7 @@ let viewController = (function() {
     }
 
     // Ф-я для отображения подсчитанных рассходов доходов и процентов в приложении
-    function updateBudget(obj) {
+    function displayBudget(obj) {
 
         document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
         document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
@@ -109,7 +110,7 @@ let viewController = (function() {
         clearFields: clearFields,
         getInput: getInput,
         renderListItem: renderListItem,
-        updateBudget: updateBudget,
+        displayBudget: displayBudget,
         // Метод который возвращает селекторы
         getDomStrings: function() {
             return DOMstrings

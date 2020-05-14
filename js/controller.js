@@ -6,6 +6,10 @@ let controller = (function(budgetController, uiCtrl) {
         // Получем значение getDomStrings в контроллере
         let DOM = uiCtrl.getDomStrings();
         document.querySelector(DOM.form).addEventListener('submit', ctrlAddItem);
+
+        // Прослушка клика по #budget-table(таблица с доходами и расходами)
+        document.querySelector(DOM.budgetTable).addEventListener("click", ctrlDeleteItem);
+
     }
     // Функция которая срабатывает при отправке формы
     function ctrlAddItem(event) {
@@ -32,6 +36,25 @@ let controller = (function(budgetController, uiCtrl) {
         } 
        
     }
+
+    // Ф-я которая будет заниматься удалением из таблица с доходами и расходами
+    function ctrlDeleteItem (event) {
+        let itemID, splitID, type, ID;
+        // Проверяем действительно ли мы кликнули по кнопке удалить, а не почему то либо другому
+        if(event.target.closest(".item__remove")) {
+            // Находим родителя кнопки с тегом li
+            // И сразу же обращаемся к его id
+            itemID = event.target.closest("li.budget-list__item").id;
+            // Метод split() разделяет строку на масси о заданому разделителю
+            // ID эдемента inc-1/exp-1 разбиваеться на массив ["inc", "1"]
+            splitID = itemID.split("-");
+            type = splitID[0];
+            ID = splitID[1];
+
+            // Вызываем Ф-ю удаления данных о доходах и расходах из модели
+            budgetController.deleteItem(type, ID);
+        }
+    }
     
     // Ф-я для подсчета бюджета
     function updateBudget () {
@@ -41,7 +64,7 @@ let controller = (function(budgetController, uiCtrl) {
         let budgetObj = budgetController.getBudget();
         console.log("updateBudget -> budgetObj", budgetObj);
         // 3. Отобразить весь бюджет в шаблоне
-        uiCtrl.updateBudget(budgetObj);
+        uiCtrl.displayBudget(budgetObj);
 
     }
     
@@ -49,7 +72,7 @@ let controller = (function(budgetController, uiCtrl) {
         init: function() {
             console.log("App started");
             setupEventListeners();
-            uiCtrl.updateBudget({
+            uiCtrl.displayBudget({
                 budget: 0,
                 totalInc: 0,
                 totalExp: 0,
