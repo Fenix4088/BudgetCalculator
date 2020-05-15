@@ -13,6 +13,8 @@ let viewController = (function() {
         expanceLabel: "#expence-label",
         expancePercentLabel: "#expense-persent-label",
         budgetTable: "#budget-table",
+        monthLabel: "#month",
+        yearLabel: "#year",
 
     }
 
@@ -23,7 +25,7 @@ let viewController = (function() {
                 description: document.querySelector(DOMstrings.inputDescription).value,
                 value: document.querySelector(DOMstrings.inputValue).value
             }
-    }
+        }
 
     // Ф-я для форматирования чисел
     // Принемает число и тип этого числа
@@ -198,6 +200,23 @@ let viewController = (function() {
 
         })
     }
+
+    function displayMonth() {
+        let now = new Date();
+        let year = now.getFullYear(); // 2020
+        let month = now.getMonth(); // возвращает индекс месяца 0 -> Январь и т.д.
+
+        let monthArr = [
+            "Январь", "Февраль", "Март", 
+            "Апрель", "Май", "Июнь", 
+            "Июль", "Август", "Сентябрь", 
+            "Октябрь", "Ноябрь", "Декабрь"
+        ];
+
+        month = monthArr[month];
+        document.querySelector(DOMstrings.monthLabel).innerText = year;
+        document.querySelector(DOMstrings.yearLabel).innerText = month;
+    }
     
     // Ф-я для возврата из view.js 
     return {
@@ -207,6 +226,8 @@ let viewController = (function() {
         displayBudget: displayBudget,
         deleteListItem: deleteListItem,
         updateItemsPercentages: updateItemsPercentages,
+        displayMonth: displayMonth,
+        
         // Метод который возвращает селекторы
         getDomStrings: function() {
             return DOMstrings

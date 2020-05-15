@@ -100,6 +100,7 @@ let controller = (function(budgetController, uiCtrl) {
     return {
         init: function() {
             console.log("App started");
+            uiCtrl.displayMonth();
             setupEventListeners();
             uiCtrl.displayBudget({
                 budget: 0,
