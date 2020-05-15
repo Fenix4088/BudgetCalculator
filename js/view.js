@@ -51,7 +51,7 @@ let viewController = (function() {
                 <div class="item__amount">
                     %value%
                     <div class="item__badge">
-                        <div class="badge badge--dark">
+                        <div class="item__percent badge badge--dark">
                             15%
                         </div>
                     </div>
@@ -91,11 +91,11 @@ let viewController = (function() {
     function displayBudget(obj) {
 
         document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
-        document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
-        document.querySelector(DOMstrings.expanceLabel).textContent = obj.totalExp;
+        document.querySelector(DOMstrings.incomeLabel).textContent = "+ " + obj.totalInc;
+        document.querySelector(DOMstrings.expanceLabel).textContent = "- " + obj.totalExp;
 
         if(obj.percentage > 0) {
-            document.querySelector(DOMstrings.expancePercentLabel).textContent = obj.percentage;
+            document.querySelector(DOMstrings.expancePercentLabel).textContent = obj.percentage + "%";
         } else {
             document.querySelector(DOMstrings.expancePercentLabel).textContent = "--"
         }
@@ -108,6 +108,26 @@ let viewController = (function() {
     function deleteListItem(itemID) {
         document.getElementById(itemID).remove();
     }
+
+    // Ф-я для вывода обновленных в моделе процентов на экран
+    function updateItemsPercentages(items) {
+        items.forEach( function(item) {
+        console.log("updateItemsPercentages -> item", item);
+        // item => [exp-id, 26%]
+        // Находим блок с процентами внутри текущей записи
+        let el = document.getElementById(`exp-${item[0]}`).querySelector('.item__percent'); // li нашли затем проценты внутри li
+        console.log("updateItemsPercentages -> el", el);
+
+        // Делаем проверку если значение % = "-1" когда нет доходов
+        if(item[1] >= 0) {
+            el.parentElement.style.display = "block";
+            el.textContent = item[1] + "%";
+        } else {
+            el.parentElement.style.display = "none";
+        }
+
+        })
+    }
     
     // Ф-я для возврата из view.js 
     return {
@@ -116,6 +136,7 @@ let viewController = (function() {
         renderListItem: renderListItem,
         displayBudget: displayBudget,
         deleteListItem: deleteListItem,
+        updateItemsPercentages: updateItemsPercentages,
         // Метод который возвращает селекторы
         getDomStrings: function() {
             return DOMstrings

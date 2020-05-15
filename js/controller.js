@@ -17,11 +17,14 @@ let controller = (function(budgetController, uiCtrl) {
         // Посчитаем проценты для каждой записи типа Expense
         budgetController.calculatePercentages();
         budgetController.test();
-        // Получаем данные по процентам с модели
+
+        // Получаем данные по процентам с модели в виде массива
         let idsAndPercents = budgetController.getAllIdsAndPersentages();
         console.log("updatePersentages -> idsAndPercents", idsAndPercents)
-        
-        // Обновляем UI с новыми процентами
+
+        // Обновляем UI с новыми процентами, который принемает в себя рассчеты из модели
+        uiCtrl.updateItemsPercentages(idsAndPercents);
+
     }
 
     // Функция которая срабатывает при отправке формы
