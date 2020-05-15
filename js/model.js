@@ -12,6 +12,37 @@ let modelController = (function() {
         this.id = id;
         this.description = description;
         this.value = value;
+        // Тут будут записаны проценты, -1 это не значение, это флаг, который говорит, что проценты пока не установлены
+        this.percentage = -1;
+    }
+    // Для каждого обьекта типа Expense мы создаем метод который будет рассчитывать сколько процентов он составляет от общего дохода
+    // Ф-я принемает общий доход
+    Expense.prototype.calcProsenteage = function(totalIncome) {
+        if(totalIncome > 0) {
+            this.percentage = Math.round((this.value / totalIncome) * 100);
+        } else {
+            this.percentage = -1;
+        }
+    }
+    // Создаем метод который возвращает значение из прототипа
+    Expense.prototype.getPercentage = function() {
+        return this.percentage;
+    }
+
+    // Ф-я которая запускает пересчет процентов для всех расходов
+    function calculatePercentages() {
+        data.allItems.exp.forEach( function(item) {
+            item.calcProsenteage(data.totals.inc);
+        })
+    }
+
+    // Ф-я которая юудет возвращать список id и список процентов которые нам нужно обновить во view
+    function getAllIdsAndPersentages () {
+        // [[id, percentage], [id, percentage], [id, percentage]]
+        let allPerc = data.allItems.exp.map( function(item) {
+            return [item.id, item.getPercentage()]
+        });
+        return allPerc;
     }
 
     function addItem(type, desc, val) {
@@ -122,6 +153,8 @@ let modelController = (function() {
         deleteItem: deleteItem,
         calculateBudget: calculateBudget,
         getBudget: getBudget,
+        calculatePercentages: calculatePercentages,
+        getAllIdsAndPersentages: getAllIdsAndPersentages,
         test: function() {
             console.log(data);
         }

@@ -11,6 +11,19 @@ let controller = (function(budgetController, uiCtrl) {
         document.querySelector(DOM.budgetTable).addEventListener("click", ctrlDeleteItem);
 
     }
+
+    // Ф-я для подсчета и обновления процентов в таблице расходов
+    function updatePersentages () {
+        // Посчитаем проценты для каждой записи типа Expense
+        budgetController.calculatePercentages();
+        budgetController.test();
+        // Получаем данные по процентам с модели
+        let idsAndPercents = budgetController.getAllIdsAndPersentages();
+        console.log("updatePersentages -> idsAndPercents", idsAndPercents)
+        
+        // Обновляем UI с новыми процентами
+    }
+
     // Функция которая срабатывает при отправке формы
     function ctrlAddItem(event) {
         event.preventDefault();
@@ -33,10 +46,13 @@ let controller = (function(budgetController, uiCtrl) {
             generateTestData.init();
             // 4. Посчитать в бюджет. Вызываем ф-ю для обновления общей суммы бюджета
             updateBudget();
+
+            // 5. Обновляем процент бюджета
+            updatePersentages();
         } 
        
     }
-
+    
     // Ф-я которая будет заниматься удалением из таблица с доходами и расходами
     function ctrlDeleteItem (event) {
         let itemID, splitID, type, ID;
@@ -59,6 +75,9 @@ let controller = (function(budgetController, uiCtrl) {
             // Обновляем бюджет после удаления
             updateBudget();
 
+            //  Обновляем процент бюджета
+            updatePersentages();
+
         }
     }
     
@@ -72,6 +91,8 @@ let controller = (function(budgetController, uiCtrl) {
         uiCtrl.displayBudget(budgetObj);
 
     }
+
+
     
     return {
         init: function() {
