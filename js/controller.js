@@ -66,10 +66,10 @@ let controller = (function(budgetController, uiCtrl) {
             itemID = event.target.closest("li.budget-list__item").id; // inc-0
             // Метод split() разделяет строку на масси о заданому разделителю
             // ID эдемента inc-1/exp-1 разбиваеться на массив ["inc", "1"]
-            splitID = itemID.split("-"); //"inc-0" => ["inc", "0"]
-            type = splitID[0];
-            ID = parseInt(splitID[1]);
-
+            // splitID = itemID.split("-"); //"inc-0" => ["inc", "0"]
+            // type = splitID[0];
+            // ID = parseInt(splitID[1]);
+            const [type, ID] = itemID.split("-");
             // Вызываем Ф-ю удаления данных о доходах и расходах из модели
             budgetController.deleteItem(type, ID);
             // Вызываем Ф-ю удаления данных о доходах и расходах из view
