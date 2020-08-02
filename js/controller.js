@@ -1,104 +1,92 @@
-// Этот модуль юудет контролировать все процессы приложения, cj.snbz? 
-let controller = (function(budgetController, uiCtrl) {
-
-    
+let controller = (function (budgetController, uiCtrl) {
     let setupEventListeners = function () {
-        // Получем значение getDomStrings в контроллере
+        // Get the getDomStrings value in the controller
         let DOM = uiCtrl.getDomStrings();
-        document.querySelector(DOM.form).addEventListener('submit', ctrlAddItem);
+        document.querySelector(DOM.form).addEventListener("submit", ctrlAddItem);
 
-        // Прослушка клика по #budget-table(таблица с доходами и расходами)
+        //click on # budget-table (table with income and expenses)
         document.querySelector(DOM.budgetTable).addEventListener("click", ctrlDeleteItem);
+    };
 
-    }
-
-    // Ф-я для подсчета и обновления процентов в таблице расходов
-    function updatePersentages () {
-        // Посчитаем проценты для каждой записи типа Expense
+    // Calculating and updating percentages in the expense table
+    function updatePersentages() {
+        // Calculate the percentages for each Expense record
         budgetController.calculatePercentages();
-        budgetController.test();
 
-        // Получаем данные по процентам с модели в виде массива
+        // Get data on percentages from the model as an array
         let idsAndPercents = budgetController.getAllIdsAndPersentages();
-        console.log("updatePersentages -> idsAndPercents", idsAndPercents)
 
-        // Обновляем UI с новыми процентами, который принемает в себя рассчеты из модели
+        // Update the UI with new percentages, which takes the calculations from the model
         uiCtrl.updateItemsPercentages(idsAndPercents);
-
     }
 
-    // Функция которая срабатывает при отправке формы
+    // Function that fires when the form is submitted
     function ctrlAddItem(event) {
         event.preventDefault();
 
-        // 1. Получать данные из формы
+        // 1. Receive data from a form
         let input = uiCtrl.getInput();
 
-        // Проверка на пустые поля перед началом работы
-        // Проверяе введенено ли в поле с суммой число
-        // И что введенное число юольше нуля
-        if(input.description !== "" && !isNaN(input.value) && input.value > 0) {
-            // 2. Добавлять данные из формы в модель
+        // Checking for empty fields before starting work
+        // Check if a number is entered in the field with the amount
+        // And that the entered number is greater than zero
+        if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
+            // 2. Add data from a form to a model
             let newItem = budgetController.addItem(input.type, input.description, input.value);
-            budgetController.test();
-            // 3. Доюавлять запись из формы в UI
+            // 3. Add form entry to UI
             uiCtrl.renderListItem(newItem, input.type);
-            // Очистка полей формы после введения данных
+            // Clearing form fields after entering data
             uiCtrl.clearFields();
-            // Тестовая генерация значений в форме
+            // Test generation of values ​​in a form
             generateTestData.init();
-            // 4. Посчитать в бюджет. Вызываем ф-ю для обновления общей суммы бюджета
+            // 4. Calculate to budget. We call function to update the total budget
             updateBudget();
 
-            // 5. Обновляем процент бюджета
+            // 5. Updating the budget percentage
             updatePersentages();
-        } 
-       
+        }
     }
-    
-    // Ф-я которая будет заниматься удалением из таблица с доходами и расходами
-    function ctrlDeleteItem (event) {
-        let itemID, splitID, type, ID;
-        // Проверяем действительно ли мы кликнули по кнопке удалить, а не почему то либо другому
-        if(event.target.closest(".item__remove")) {
-            // Находим родителя кнопки с тегом li
-            // И сразу же обращаемся к его id
+
+    // Function which will deal with the removal from the table with income and expenses
+    function ctrlDeleteItem(event) {
+        let itemID;
+        let splitID;
+        let type;
+        let ID;
+        // We check whether we really clicked on the delete button, and not for some reason or another
+        if (event.target.closest(".item__remove")) {
+            // Finding the parent of the button with the li tag
+            // And immediately refer to its id
             itemID = event.target.closest("li.budget-list__item").id; // inc-0
-            // Метод split() разделяет строку на масси о заданому разделителю
-            // ID эдемента inc-1/exp-1 разбиваеться на массив ["inc", "1"]
             splitID = itemID.split("-"); //"inc-0" => ["inc", "0"]
             type = splitID[0];
             ID = parseInt(splitID[1]);
             // const [type, ID] = itemID.split("-");
-            // Вызываем Ф-ю удаления данных о доходах и расходах из модели
+            //removing income and expense data from the model
             budgetController.deleteItem(type, ID);
-            // Вызываем Ф-ю удаления данных о доходах и расходах из view
+            // deleting income and expenses data from view
             uiCtrl.deleteListItem(itemID);
 
-            // Обновляем бюджет после удаления
+            // Updating the budget after deletion
             updateBudget();
 
-            //  Обновляем процент бюджета
+            //  Updating the budget percentage
             updatePersentages();
-
         }
     }
-    
-    // Ф-я для подсчета бюджета
-    function updateBudget () {
-        // 1. Расчитать бюджет в модели
-        budgetController.calculateBudget();
-        // 2. Получить расчитанный бюджет из модели
-        let budgetObj = budgetController.getBudget();
-        // 3. Отобразить весь бюджет в шаблоне
-        uiCtrl.displayBudget(budgetObj);
 
+    // Function for calculating the budget
+    function updateBudget() {
+        // 1. Calculate budget in model
+        budgetController.calculateBudget();
+        // 2. Get the calculated budget from the model
+        let budgetObj = budgetController.getBudget();
+        // 3. Display the entire budget in the template
+        uiCtrl.displayBudget(budgetObj);
     }
 
-
-    
     return {
-        init: function() {
+        init: function () {
             console.log("App started");
             uiCtrl.displayMonth();
             setupEventListeners();
@@ -106,12 +94,10 @@ let controller = (function(budgetController, uiCtrl) {
                 budget: 0,
                 totalInc: 0,
                 totalExp: 0,
-                percentage: 0
+                percentage: 0,
             });
-
-        }
-    }
-
+        },
+    };
 })(modelController, viewController);
 
 controller.init();

@@ -1,11 +1,9 @@
-// Этот модуль отвечает за внешний вид, за шаблон
-let viewController = (function() {
-    // в DOMstrings храняться все селекторы котрые понадаюятся нам для работы с приложением
+let viewController = (function () {
     let DOMstrings = {
-        inputType: '#input__type',
-        inputDescription: '#input__description',
-        inputValue: '#input__value',
-        form: '#budget-form',
+        inputType: "#input__type",
+        inputDescription: "#input__description",
+        inputValue: "#input__value",
+        form: "#budget-form",
         incomeContainer: "#income__list",
         expenseContainer: "#expenses__list",
         budgetLabel: "#budget-value",
@@ -15,86 +13,81 @@ let viewController = (function() {
         budgetTable: "#budget-table",
         monthLabel: "#month",
         yearLabel: "#year",
+    };
 
+    // A method that collects data from a form
+    function getInput() {
+        return {
+            type: document.querySelector(DOMstrings.inputType).value,
+            description: document.querySelector(DOMstrings.inputDescription).value,
+            value: document.querySelector(DOMstrings.inputValue).value,
+        };
     }
 
-    // Метод который собирает данные из формы
-    function getInput () {
-            return {
-                type: document.querySelector(DOMstrings.inputType).value,
-                description: document.querySelector(DOMstrings.inputDescription).value,
-                value: document.querySelector(DOMstrings.inputValue).value
-            }
-        }
-
-    // Ф-я для форматирования чисел
-    // Принемает число и тип этого числа
+    // Function for formatting numbers
+    // Accepts the number and type of that number
     function formatNumber(num, type) {
-        let numSplit, int, dec, resultNumber;
+        let numSplit;
+        let int;
+        let dec;
+        let resultNumber;
         let newInt = "";
 
-        // Уюираем знак минус у отрицательных чисел
+        // Letting go of the minus sign for negative numbers
         num = Math.abs(num); //Math.abs(-10) = 10
 
-        // Приводим к двум цифрам после точки
+        // Bringing to two numbers after the dot
         num = num.toFixed(2); // 2.45678.toFixed(2) = 2.46 / 2.toFixed(2) = 2.00
-        // Разделяем число на две части на 123000 => 123,000.00/ 123456789 => 123,456,789.00
+        // Divide the number into two parts by 123000 => 123,000.00/ 123456789 => 123,456,789.00
         numSplit = num.split("."); // 45.78 => [45, 78]
-        int = numSplit[0]; // целая часть
-        dec = numSplit[1]; // десятичная часть
+        int = numSplit[0]; // whole part
+        dec = numSplit[1]; // decimal part
 
-        // Раставляем запятые
-        // Исходя из длинны числа мы делим его на части по три цифры
-        // Начиная с правой стороны проставляем запятые после каждого третьего числа
-        // Если длинна номера больше чем три цифры значит нужно ставить запятые
-        if(int.length > 3) {
-            console.log("formatNumber -> int.length", int.length)
-            // Цикл который определяет сколько запятых необходимо поставить
-            for(let i = 0; i < int.length / 3; i++ ) {
-                // Формируем новую строку с номером
-                newInt = 
-                // Добавляем запятую каждые три числа
-                "," +
-                // Вырезанный кусок из исходной строки 
-                int.substring(int.length - 3 * (i + 1), int.length - 3 * i) + 
-                // Конец строки первая часть
-                newInt;
-                console.log("formatNumber -> newInt", newInt)
-
+        // Solve commas
+        // Based on the length of the number, we divide it into parts of three digits
+        // Starting from the right side, we put down commas after every third number
+        // If the number is longer than three digits, then you need to put commas
+        if (int.length > 3) {
+            // A loop that determines how many commas to put
+            for (let i = 0; i < int.length / 3; i++) {
+                // We form a new line with a number
+                newInt =
+                    // Add a comma every three numbers
+                    "," +
+                    // Cut piece from original line
+                    int.substring(int.length - 3 * (i + 1), int.length - 3 * i) +
+                    // End of line first part
+                    newInt;
             }
-            console.log("formatNumber -> newInt", newInt)
 
-            // Убираем запятую в начале, если она есть
-            // Если у строки первый символ равен запятой то верни нам строку начиная со второго символа
-            if(newInt[0] === ",") {
+            // Remove the comma at the beginning, if any
+            // If the first character of a string is equal to a comma, then return the string to us starting from the second character
+            if (newInt[0] === ",") {
                 newInt = newInt.substring(1);
-                console.log(newInt);
             }
-
-        } else if(int === "0") { 
-            // если исходное число равно нулю, то в новую строку записываем ноль
+        } else if (int === "0") {
+            // if the original number is zero, then write zero to a new line
             newInt = "0";
         } else {
             newInt = int;
         }
-        
+
         resultNumber = newInt + "." + dec;
 
-        if(type === "exp") {
+        if (type === "exp" && resultNumber != 0) {
             resultNumber = "- " + resultNumber;
         } else if (type === "inc") {
             resultNumber = "+ " + resultNumber;
-
         }
 
         return resultNumber;
     }
 
-    // Метод с помощью которого мы будем вставлять "запись" в разметку
-    // Принемает в себя обьект записи и тип(куда она относится в рассход или доход)
+    // The method with which we will insert the "record" into the markup
+    // Takes the record object and type (where it belongs to the expense or income)
     function renderListItem(obj, type) {
         let containerElement, html;
-        if(type === "inc") {
+        if (type === "inc") {
             containerElement = DOMstrings.incomeContainer;
             html = `<li id="inc-%id%" class="budget-list__item item item--income">
             <div class="item__title">%description%</div>
@@ -127,98 +120,83 @@ let viewController = (function() {
             </div>
         </li>`;
         }
-        // Применяем встроенный метод replace для поиска и замены строки
-        // Заменяем строки на нужные значения
-        // Работаем с переменной newHtml переписывая ее раз за разом
+        // Using the built-in replace method to find and replace a string
+        // Replace strings with desired values
         let newHtml = html.replace("%id%", obj.id);
         newHtml = newHtml.replace("%description%", obj.description);
         newHtml = newHtml.replace("%value%", formatNumber(obj.value, type));
 
-
         document.querySelector(containerElement).insertAdjacentHTML("beforeend", newHtml);
-
     }
 
-    // Ф-я которая будет очищать поля формы 
-    function clearFields () {
+    // Fгтсешщт which will clear form fields
+    function clearFields() {
         let inputDesc, inputVal;
         inputDesc = document.querySelector(DOMstrings.inputDescription);
         inputVal = document.querySelector(DOMstrings.inputValue);
 
         inputDesc.value = "";
-        // Встроенный метод который вызывает фокус на выюранном поле
+        // Built-in method that calls focus on the selected field
         inputDesc.focus();
         inputVal.value = "";
-
     }
 
-    // Ф-я для отображения подсчитанных рассходов доходов и процентов в приложении
+    // Function for displaying the calculated expenses of income and interest in the application
     function displayBudget(obj) {
-        
-        let type;
-        if (obj.budget > 0) {
-            type = "inc";
-        } else {
-            type = "exp";
-        }
+        // let type;
+        // if (obj.budget > 0) {
+        //     type = "inc";
+        // } else {
+        //     type = "exp";
+        // }
+        const type = obj.budget > 0 ? "inc" : "exp";
 
         document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget, type);
         document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, "inc");
         document.querySelector(DOMstrings.expanceLabel).textContent = formatNumber(obj.totalExp, "exp");
 
-        if(obj.percentage > 0) {
+        if (obj.percentage > 0) {
             document.querySelector(DOMstrings.expancePercentLabel).textContent = obj.percentage + "%";
         } else {
-            document.querySelector(DOMstrings.expancePercentLabel).textContent = "--"
+            document.querySelector(DOMstrings.expancePercentLabel).textContent = "--";
         }
-
-
-
     }
 
-    // Ф-я для удаления данных с экрана 
+    // Function to remove data from the screen
     function deleteListItem(itemID) {
         document.getElementById(itemID).remove();
     }
 
-    // Ф-я для вывода обновленных в моделе процентов на экран
+    // Function to display updated percentages in the model on the screen
     function updateItemsPercentages(items) {
-        items.forEach( function(item) {
-        console.log("updateItemsPercentages -> item", item);
-        // item => [exp-id, 26%]
-        // Находим блок с процентами внутри текущей записи
-        let el = document.getElementById(`exp-${item[0]}`).querySelector('.item__percent'); // li нашли затем проценты внутри li
+        items.forEach(function (item) {
+            // item => [exp-id, 26%]
+            // Find a block with percentages inside the current record
+            let el = document.getElementById(`exp-${item[0]}`).querySelector(".item__percent"); // li found then interest inside li
 
-
-        // Делаем проверку если значение % = "-1" когда нет доходов
-        if(item[1] >= 0) {
-            el.parentElement.style.display = "block";
-            el.textContent = item[1] + "%";
-        } else {
-            el.parentElement.style.display = "none";
-        }
-
-        })
+            // We check if the value% = "-1" when there is no income
+            if (item[1] >= 0) {
+                el.parentElement.style.display = "block";
+                el.textContent = item[1] + "%";
+            } else {
+                el.parentElement.style.display = "none";
+            }
+        });
     }
 
     function displayMonth() {
         let now = new Date();
         let year = now.getFullYear(); // 2020
-        let month = now.getMonth(); // возвращает индекс месяца 0 -> Январь и т.д.
+        let month = now.getMonth(); // returns month index 0 -> January etc.
 
-        let monthArr = [
-            "Январь", "Февраль", "Март", 
-            "Апрель", "Май", "Июнь", 
-            "Июль", "Август", "Сентябрь", 
-            "Октябрь", "Ноябрь", "Декабрь"
-        ];
+        let monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
         month = monthArr[month];
         document.querySelector(DOMstrings.monthLabel).innerText = year;
         document.querySelector(DOMstrings.yearLabel).innerText = month;
     }
-    
-    // Ф-я для возврата из view.js 
+
+    // Function to return from view.js
     return {
         clearFields: clearFields,
         getInput: getInput,
@@ -227,11 +205,10 @@ let viewController = (function() {
         deleteListItem: deleteListItem,
         updateItemsPercentages: updateItemsPercentages,
         displayMonth: displayMonth,
-        
-        // Метод который возвращает селекторы
-        getDomStrings: function() {
-            return DOMstrings
-        }
-    }
 
+        // Method that returns selectors
+        getDomStrings: function () {
+            return DOMstrings;
+        },
+    };
 })();
