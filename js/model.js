@@ -74,14 +74,6 @@ let modelController = (function () {
 
     // Function removing income and expense data from the model
     function deleteItem(type, id) {
-        //     // Создаем новый массив в который мы запишем айдишки всех элементов
-        //     let ids = data.allItems[type].map( function(item) {
-        //         return item.id;
-        //     });
-
-        //     // Узнаем какой индекс в массиве имеет данный id дохода/расхода
-        //    let index =  ids.indexOf(id);
-
         const index = data.allItems[type].findIndex((item) => item.id === id);
         //We delete (splice (where we start deleting from, at what index, how many elements to delete))
         // Condition, if an element of the array is not found, then we delete it

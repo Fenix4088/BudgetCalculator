@@ -143,12 +143,6 @@ let viewController = (function () {
 
     // Function for displaying the calculated expenses of income and interest in the application
     function displayBudget(obj) {
-        // let type;
-        // if (obj.budget > 0) {
-        //     type = "inc";
-        // } else {
-        //     type = "exp";
-        // }
         const type = obj.budget > 0 ? "inc" : "exp";
 
         document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget, type);
