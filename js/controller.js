@@ -108,12 +108,6 @@ let controller = (function (budgetController, uiCtrl) {
             updatePersentages();
             uiCtrl.displayMonth();
             setupEventListeners();
-            // uiCtrl.displayBudget({
-            //     budget: 0,
-            //     totalInc: 0,
-            //     totalExp: 0,
-            //     percentage: 0,
-            // });
         },
     };
 })(modelController, viewController);

@@ -1,4 +1,3 @@
-// Этот модуль отвечает за данные нашего приложения
 let modelController = (function () {
     // Constructor for income, writes property data of objects
     let Income = function (id, description, value) {
