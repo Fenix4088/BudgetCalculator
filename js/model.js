@@ -16,24 +16,16 @@ let modelController = (function () {
         this.percentage = -1;
     };
 
-    // For each object of type Expense, we create a method that will calculate how many percent it is from the total income
-    // Function receives total income
-    Expense.prototype.calcProsenteage = function (totalIncome) {
-        if (totalIncome > 0) {
-            this.percentage = Math.round((this.value / totalIncome) * 100);
-        } else {
-            this.percentage = -1;
-        }
-    };
-    // Create a method that returns a value from the prototype
-    Expense.prototype.getPercentage = function () {
-        return this.percentage;
-    };
-
-    // Function that starts the recalculation of interest for all expenses
-    function calculatePercentages() {
-        data.allItems.exp.forEach(function (item) {
-            item.calcProsenteage(data.totals.inc);
+    // Function for calculating expense item p
+    function calcPersentages() {
+        const totalInc = data.totals.inc;
+        const itemExpArr = data.allItems.exp;
+        itemExpArr.forEach(function (itemExp) {
+            if (totalInc > 0) {
+                itemExp.percentage = Math.round((itemExp.value / totalInc) * 100);
+            } else {
+                itemExp.percentage = -1;
+            }
         });
     }
 
@@ -41,7 +33,7 @@ let modelController = (function () {
     function getAllIdsAndPersentages() {
         // [[id, percentage], [id, percentage], [id, percentage]]
         let allPerc = data.allItems.exp.map(function (item) {
-            return [item.id, item.getPercentage()];
+            return [item.id, item.percentage];
         });
         return allPerc;
     }
@@ -67,6 +59,9 @@ let modelController = (function () {
         }
         // We write "record" / object to our data structure
         data.allItems[type].push(newItem);
+        // ! new
+        localStorage.setItem(`${type}`, JSON.stringify(data.allItems[type]));
+        // ! new
         // Returning a new object
         // We return newItem in order to update the markup based on it
         return newItem;
@@ -124,8 +119,8 @@ let modelController = (function () {
     // All data regarding the expenses and income of our
     let data = {
         allItems: {
-            inc: [],
-            exp: [],
+            inc: JSON.parse(localStorage.getItem("inc")) || [],
+            exp: JSON.parse(localStorage.getItem("exp")) || [],
         },
         totals: {
             inc: 0,
@@ -137,12 +132,13 @@ let modelController = (function () {
 
     // We return function addItem as an object in order to refer to it in the controller
     return {
+        data: data,
+        calcPersentages: calcPersentages,
+        getAllIdsAndPersentages: getAllIdsAndPersentages,
         addItem: addItem,
         deleteItem: deleteItem,
         calculateBudget: calculateBudget,
         getBudget: getBudget,
-        calculatePercentages: calculatePercentages,
-        getAllIdsAndPersentages: getAllIdsAndPersentages,
         test: function () {
             console.log(data);
         },

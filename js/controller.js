@@ -11,10 +11,12 @@ let controller = (function (budgetController, uiCtrl) {
     // Calculating and updating percentages in the expense table
     function updatePersentages() {
         // Calculate the percentages for each Expense record
-        budgetController.calculatePercentages();
+        budgetController.calcPersentages();
+        // budgetController.calculatePercentages();
 
         // Get data on percentages from the model as an array
         let idsAndPercents = budgetController.getAllIdsAndPersentages();
+        console.log("updatePersentages -> idsAndPercents", idsAndPercents);
 
         // Update the UI with new percentages, which takes the calculations from the model
         uiCtrl.updateItemsPercentages(idsAndPercents);
@@ -88,14 +90,31 @@ let controller = (function (budgetController, uiCtrl) {
     return {
         init: function () {
             console.log("App started");
+            if (budgetController.data.allItems.inc.length !== 0) {
+                const incArr = budgetController.data.allItems.inc;
+                const type = "inc";
+                incArr.forEach(function (object) {
+                    uiCtrl.renderListItem(object, type);
+                });
+            }
+
+            if (budgetController.data.allItems.exp.length !== 0) {
+                const expArr = budgetController.data.allItems.exp;
+                const type = "exp";
+                expArr.forEach(function (object) {
+                    uiCtrl.renderListItem(object, type);
+                });
+            }
+            updateBudget();
+            updatePersentages();
             uiCtrl.displayMonth();
             setupEventListeners();
-            uiCtrl.displayBudget({
-                budget: 0,
-                totalInc: 0,
-                totalExp: 0,
-                percentage: 0,
-            });
+            // uiCtrl.displayBudget({
+            //     budget: 0,
+            //     totalInc: 0,
+            //     totalExp: 0,
+            //     percentage: 0,
+            // });
         },
     };
 })(modelController, viewController);
