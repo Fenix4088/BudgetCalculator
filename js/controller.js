@@ -12,7 +12,6 @@ let controller = (function (budgetController, uiCtrl) {
     function updatePersentages() {
         // Calculate the percentages for each Expense record
         budgetController.calcPersentages();
-        // budgetController.calculatePercentages();
 
         // Get data on percentages from the model as an array
         let idsAndPercents = budgetController.getAllIdsAndPersentages();

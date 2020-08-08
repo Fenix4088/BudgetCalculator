@@ -74,6 +74,8 @@ let modelController = (function () {
         // Condition, if an element of the array is not found, then we delete it
         if (index !== -1) {
             data.allItems[type].splice(index, 1);
+            // Delet an item from LS
+            localStorage.setItem(`${type}`, JSON.stringify(data.allItems[type]));
         }
     }
 
