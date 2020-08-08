@@ -15,7 +15,6 @@ let controller = (function (budgetController, uiCtrl) {
 
         // Get data on percentages from the model as an array
         let idsAndPercents = budgetController.getAllIdsAndPersentages();
-        console.log("updatePersentages -> idsAndPercents", idsAndPercents);
 
         // Update the UI with new percentages, which takes the calculations from the model
         uiCtrl.updateItemsPercentages(idsAndPercents);
