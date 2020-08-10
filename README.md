@@ -1,28 +1,27 @@
 # Budget Calculator :dollar:
 
-## Технологии
+## Technology
 - HTML 5/CSS 3
 - JavaScript (OOP)
 
-## Описание
-Приложение Budget Calculator предназначено для ведения домашней бухгалтерии.:notebook:  
-С помощью Budget Calculator вы с легкостью сможете вести учет ваших расходов и доходов, а также отслеживать общий бюджет.
+## Description
+Budget Calculator application is designed for home bookkeeping.:notebook:  
+With Budget Calculator, you can easily keep track of your expenses and income, as well as track your total budget.
 
 
-Приложение использует современную HTML разметку. Логика построена на JavaScript, по стандарту ES6+, но :heavy_exclamation_mark:модули используються из стандарта ES5.:heavy_exclamation_mark:   
-Структура кода построена на основе модели MVC.    
+The application uses modern HTML markup. The logic is built in JavaScript, according to the ES6 + standard, but :heavy_exclamation_mark:the modules are used from the ES5 standard.:heavy_exclamation_mark:   
+The the code structure is based on the MVC model.
 
 
-## Особенности
-Приложение позволяет добавлять расходы и доходы в таблицу. Подсчитывает общее количество доходов и расходов а так же общий бюджет.  
-Ведеться вычисления процентного соотношения, как отдельно записаного расхода так и всех общих расходов по отношению к общему доходу.:hear_no_evil:
-Так же есть возможность удалять каждый элемент из таблици.
+## Features
+The application allows you to add expenses and income into the table. The percentage is calculated for both separately recorded expenses and all general expenses in relation to total income.:hear_no_evil:  
+It is also possible to remove each element from the table.
 
-## Важно:heavy_exclamation_mark:
-Для тестирования в структуру кода добавлен файл testData.js он отвечает за генерацию случайных расходов/доходов.  
-Отключить его можно в файле index.html
+## Important:heavy_exclamation_mark:
+For the purpose of testing, the code structure is supplied with testData.js file wich is responseble for generating random expenses / income.     
+You can disable it in the index.html file.
 
-Все данные сохраняються только на стороне пользователя, в Local Storage.
+All data is stored only on the user side, in Local Storage.
 
-## Ссылки
-Демо проекта - [Ссылка](https://fenix4088.github.io/BudgetCalculator/) :point_left:
+## Links
+Project demo - [Link](https://fenix4088.github.io/BudgetCalculator/) :point_left:
