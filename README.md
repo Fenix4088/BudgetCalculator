@@ -14,7 +14,7 @@ The the code structure is based on the MVC model.
 
 
 ## Features
-The application you to add expenses and income into the table. The percentage is calculated for both separately recorded expenses and all general expenses in relation to total income.:hear_no_evil:  
+The application allows you to add expenses and income into the table. The percentage is calculated for both separately recorded expenses and all general expenses in relation to total income.:hear_no_evil:  
 It is also possible to remove each element from the table.
 
 ## Important:heavy_exclamation_mark:
